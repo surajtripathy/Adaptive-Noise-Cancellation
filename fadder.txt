@@ -1,0 +1,23 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+ 
+entity fadder is
+port ( a: in STD_LOGIC_VECTOR(7 downto 0);
+       b: in STD_LOGIC_VECTOR(7 downto 0);
+       sum:out STD_LOGIC_VECTOR(7 downto 0) );
+end fadder;
+ 
+architecture Behavioral of fadder is
+ 
+ 
+begin
+ sum(0)<= a(0) xor b(0);
+ sum(1)<= a(1) xor b(1);
+ sum(2)<= a(2) xor b(2);
+ sum(3)<= a(3) xor b(3);
+ sum(4)<= a(4) xor b(4);
+ sum(5)<= a(5) xor b(5);
+ sum(6)<= a(6) xor b(6);
+ sum(7)<= a(7) xor b(7);
+ 
+end Behavioral;

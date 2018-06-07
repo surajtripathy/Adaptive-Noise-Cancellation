@@ -1,0 +1,56 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL;
+-- Uncomment the following library declaration if using
+-- arithmetic functions with Signed or Unsigned values
+--use IEEE.NUMERIC_STD.ALL;
+
+-- Uncomment the following library declaration if instantiating
+-- any Xilinx leaf cells in this code.
+--library UNISIM;
+--use UNISIM.VComponents.all;
+
+entity AdaptiveFilter is
+             Port ( x: in STD_LOGIC_VECTOR(7 downto 0);
+                    w: in STD_LOGIC_VECTOR(7 downto 0);
+						  d: in STD_LOGIC_VECTOR(7 downto 0);
+						  w1: inout STD_LOGIC_VECTOR(7 downto 0);
+						  w2: inout STD_LOGIC_VECTOR(7 downto 0);
+                    Y1: inout STD_LOGIC_VECTOR(7 downto 0);
+						  Y2: inout STD_LOGIC_VECTOR(7 downto 0);
+						  E1: inout STD_LOGIC_VECTOR(7 downto 0);
+						  E2: inout STD_LOGIC_VECTOR(7 downto 0));
+end AdaptiveFilter;
+
+architecture Structural of AdaptiveFilter is
+
+signal Eu1: STD_LOGIC_VECTOR(7 downto 0);
+signal Eux1: STD_LOGIC_VECTOR(7 downto 0);
+signal Eu2: STD_LOGIC_VECTOR(7 downto 0);
+signal Eux2: STD_LOGIC_VECTOR(7 downto 0);
+
+component fadder 
+port ( a: in STD_LOGIC_VECTOR(7 downto 0);
+       b: in STD_LOGIC_VECTOR(7 downto 0);
+       sum:out STD_LOGIC_VECTOR(7 downto 0));
+end component;
+component fmultiplier 
+port ( a1: in STD_LOGIC_VECTOR(7 downto 0);
+       b1: in STD_LOGIC_VECTOR(7 downto 0);
+       mul: out std_logic_vector(7 downto 0) );
+ end component; 
+ begin
+mul0: fmultiplier port map(x,w,Y1); 
+add0: fadder port map(Y1,d,E1);
+mul1: fmultiplier port map(E1,"11111111",Eu1);
+mul2: fmultiplier port map(Eu1,x,Eux1);
+add1: fadder port map(w,Eux1,w1);
+
+mul3: fmultiplier port map(w1,x,Y2);
+add2: fadder port map(Y2,d,E2);
+mul4: fmultiplier port map(E2,"11111111",Eu2);
+mul5: fmultiplier port map(Eu2,x,Eux2);
+add3: fadder port map(w1,Eux2,w2);
+
+
+end Structural;
